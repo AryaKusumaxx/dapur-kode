@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="1200" height="600" viewBox="0 0 1200 600">
+  <defs>
+    <linearGradient id="grad1" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#1f2937;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#111827;stop-opacity:1" />
+    </linearGradient>
+    <pattern id="gridPattern" width="30" height="30" patternUnits="userSpaceOnUse">
+      <path d="M 30 0 L 0 0 0 30" fill="none" stroke="#374151" stroke-width="0.5"/>
+    </pattern>
+  </defs>
+  <rect width="1200" height="600" fill="url(#grad1)"/>
+  <rect width="1200" height="600" fill="url(#gridPattern)"/>
+  
+  <!-- Add some abstract shapes for visual interest -->
+  <circle cx="200" cy="150" r="80" fill="#4f46e5" opacity="0.3"/>
+  <circle cx="900" cy="450" r="120" fill="#6366f1" opacity="0.2"/>
+  <path d="M0,400 Q300,300 600,400 T1200,300" stroke="#4338ca" stroke-width="3" fill="none" opacity="0.2"/>
+  <path d="M0,450 Q300,550 600,450 T1200,550" stroke="#4338ca" stroke-width="2" fill="none" opacity="0.1"/>
+</svg>

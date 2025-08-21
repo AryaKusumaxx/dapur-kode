@@ -1,0 +1,17 @@
+{
+    "name": "dapur-kode-mcp",
+    "version": "1.0.0",
+    "description": "Model Context Protocol server untuk Dapur Kode",
+    "main": "mcp-server.js",
+    "scripts": {
+        "start": "node mcp-server.js",
+        "dev": "nodemon mcp-server.js"
+    },
+    "dependencies": {
+        "express": "^4.18.2",
+        "body-parser": "^1.20.2"
+    },
+    "devDependencies": {
+        "nodemon": "^3.0.1"
+    }
+}

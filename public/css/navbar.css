@@ -1,0 +1,77 @@
+/* Tambahan CSS untuk navbar */
+.dropdown-menu {
+    transform-origin: top right;
+    opacity: 0;
+    transform: scale(0.95);
+    transition: opacity 0.1s ease, transform 0.1s ease;
+}
+
+.dropdown-menu.active {
+    opacity: 1;
+    transform: scale(1);
+}
+
+/* Animasi hover pada link */
+.nav-link-hover {
+    position: relative;
+    overflow: hidden;
+}
+
+.nav-link-hover::after {
+    content: "";
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 0%;
+    height: 2px;
+    background-color: #4f46e5;
+    transition: width 0.3s ease;
+}
+
+.nav-link-hover:hover::after {
+    width: 100%;
+}
+
+/* Badge notifikasi */
+.notification-badge {
+    position: absolute;
+    top: -5px;
+    right: -5px;
+    border-radius: 9999px;
+    padding: 0.15rem 0.45rem;
+    font-size: 0.65rem;
+    font-weight: 600;
+    background-color: #ef4444;
+    color: white;
+    transform: scale(0);
+    animation: pulse 1.5s infinite;
+}
+
+@keyframes pulse {
+    0% {
+        transform: scale(0.95);
+        box-shadow: 0 0 0 0 rgba(239, 68, 68, 0.7);
+    }
+
+    70% {
+        transform: scale(1);
+        box-shadow: 0 0 0 10px rgba(239, 68, 68, 0);
+    }
+
+    100% {
+        transform: scale(0.95);
+        box-shadow: 0 0 0 0 rgba(239, 68, 68, 0);
+    }
+}
+
+/* Glassmorphism effect untuk navbar */
+.glassmorphism {
+    background: rgba(255, 255, 255, 0.8);
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+    border-bottom: 1px solid rgba(255, 255, 255, 0.3);
+}
+
+[x-cloak] {
+    display: none !important;
+}

@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="400" height="300" viewBox="0 0 400 300">
+  <rect width="400" height="300" fill="#f3f4f6"/>
+  <rect width="400" height="200" y="0" fill="#e5e7eb"/>
+  <rect width="400" height="100" y="200" fill="#ffffff"/>
+  
+  <text x="200" y="100" font-family="Arial" font-size="20" text-anchor="middle" fill="#4b5563">Product Image</text>
+  
+  <text x="20" y="230" font-family="Arial" font-size="16" fill="#111827">Product Name</text>
+  <text x="20" y="260" font-family="Arial" font-size="14" fill="#6b7280">Description...</text>
+  <text x="20" y="285" font-family="Arial" font-size="16" font-weight="bold" fill="#4f46e5">Rp 1.000.000</text>
+  
+  <rect x="320" y="255" width="60" height="30" rx="4" fill="#4f46e5"/>
+  <text x="350" y="275" font-family="Arial" font-size="12" text-anchor="middle" fill="#ffffff">Detail</text>
+</svg>

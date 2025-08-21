@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="400" height="300" viewBox="0 0 400 300">
+  <rect width="400" height="300" fill="#f3f4f6"/>
+  <circle cx="200" cy="150" r="80" fill="#4f46e5" fill-opacity="0.7"/>
+  <text x="200" y="155" font-family="Arial" font-size="16" text-anchor="middle" fill="#ffffff">Feature 1</text>
+</svg>

@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="200" height="200" viewBox="0 0 200 200">
+  <circle cx="100" cy="100" r="100" fill="#f3f4f6"/>
+  <circle cx="100" cy="80" r="40" fill="#d1d5db"/>
+  <path d="M100,120 Q140,120 140,170 L60,170 Q60,120 100,120 Z" fill="#d1d5db"/>
+  <text x="100" y="100" font-family="Arial" font-size="12" text-anchor="middle" fill="#4b5563">Testimonial User</text>
+</svg>
