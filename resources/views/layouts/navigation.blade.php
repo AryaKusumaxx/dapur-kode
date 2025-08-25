@@ -32,34 +32,37 @@
                                 </svg>
                             </button>
 
-                        <!-- Product Dropdown -->
-                        <div x-cloak x-show="productDropdown" class="nav-dropdown absolute left-0 mt-2 w-56 py-2 z-50"
-                             x-transition:enter="transition ease-out duration-200"
-                             x-transition:enter-start="transform opacity-0 translate-y-2"
-                             x-transition:enter-end="transform opacity-100 translate-y-0"
-                             x-transition:leave="transition ease-in duration-150"
-                             x-transition:leave-start="transform opacity-100 translate-y-0"
-                             x-transition:leave-end="transform opacity-0 translate-y-2">
-                            <div class="px-4 py-2 font-medium text-sm text-blue-300 uppercase tracking-wider border-b border-gray-700 bg-gray-800/80">Kategori Produk</div>
-                            <a href="{{ route('products.index', ['type' => 'paket']) }}" class="dropdown-item flex items-center px-4 py-2 text-sm">
-                                <span class="flex items-center justify-center w-6 h-6 rounded-full bg-yellow-900/20 mr-2.5">
-                                    <span class="w-2 h-2 rounded-full bg-yellow-400"></span>
-                                </span>
-                                Paket Dapur
-                            </a>
-                            <a href="{{ route('products.index', ['type' => 'jasa_pasang']) }}" class="dropdown-item flex items-center px-4 py-2 text-sm">
-                                <span class="flex items-center justify-center w-6 h-6 rounded-full bg-blue-900/20 mr-2.5">
-                                    <span class="w-2 h-2 rounded-full bg-blue-400"></span>
-                                </span>
-                                Jasa Pemasangan
-                            </a>
-                            <a href="{{ route('products.index', ['type' => 'lepas']) }}" class="dropdown-item flex items-center px-4 py-2 text-sm">
-                                <span class="flex items-center justify-center w-6 h-6 rounded-full bg-green-900/20 mr-2.5">
-                                    <span class="w-2 h-2 rounded-full bg-green-400"></span>
-                                </span>
-                                Produk Lepas
-                            </a>
-                        </div>
+                       <!-- Product Dropdown -->
+<div x-cloak x-show="productDropdown" class="nav-dropdown absolute left-0 mt-2 w-56 py-2 z-50 bg-gray-800"
+     x-transition:enter="transition ease-out duration-200"
+     x-transition:enter-start="transform opacity-0 translate-y-2"
+     x-transition:enter-end="transform opacity-100 translate-y-0"
+     x-transition:leave="transition ease-in duration-150"
+     x-transition:leave-start="transform opacity-100 translate-y-0"
+     x-transition:leave-end="transform opacity-0 translate-y-2">
+    <div class="px-4 py-2 font-medium text-sm text-blue-300 uppercase tracking-wider border-b border-gray-700">
+        Kategori Produk
+    </div>
+    <a href="{{ route('products.index', ['type' => 'paket']) }}" class="dropdown-item flex items-center px-4 py-2 text-sm">
+        <span class="flex items-center justify-center w-6 h-6 rounded-full bg-yellow-900/20 mr-2.5">
+            <span class="w-2 h-2 rounded-full bg-yellow-400"></span>
+        </span>
+        Paket Dapur
+    </a>
+    <a href="{{ route('products.index', ['type' => 'jasa_pasang']) }}" class="dropdown-item flex items-center px-4 py-2 text-sm">
+        <span class="flex items-center justify-center w-6 h-6 rounded-full bg-blue-900/20 mr-2.5">
+            <span class="w-2 h-2 rounded-full bg-blue-400"></span>
+        </span>
+        Jasa Pemasangan
+    </a>
+    <a href="{{ route('products.index', ['type' => 'lepas']) }}" class="dropdown-item flex items-center px-4 py-2 text-sm">
+        <span class="flex items-center justify-center w-6 h-6 rounded-full bg-green-900/20 mr-2.5">
+            <span class="w-2 h-2 rounded-full bg-green-400"></span>
+        </span>
+        Produk Lepas
+    </a>
+</div>
+
                     </div>
 
                     @auth
@@ -81,12 +84,16 @@
                 <!-- Search Box -->
                 <div class="hidden lg:flex items-center relative">
                     <div class="search-box relative">
-                        <input type="text" placeholder="Search products..." class="pl-9 pr-3 py-2 text-sm w-56 bg-transparent text-gray-300 focus:outline-none focus:ring-1 focus:ring-blue-500 focus:border-blue-500">
-                        <div class="absolute left-3 top-2.5 text-gray-400">
-                            <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
-                            </svg>
-                        </div>
+                        <form action="{{ route('products.index') }}" method="GET" class="search-box relative">
+                            <input 
+                                type="text" 
+                                name="search" 
+                                class="bg-white text-black placeholder-gray-400 border border-gray-300 rounded-lg px-4 py-2 focus:outline-none focus:ring-2 focus:ring-blue-400 focus:border-blue-400 transition-all duration-200"
+                                placeholder="Cari produk..." 
+                                value="{{ request('search') }}"
+                            >
+                            <button type="submit" class="hidden"></button>
+                        </form>
                     </div>
                 </div>
                 
@@ -259,7 +266,7 @@
             <!-- Search Box has been moved up, removing this duplicate -->
             
             <!-- Mobile Auth Buttons -->
-            <div class="sm:hidden flex items-center space-x-2">
+            <div class="sm:hidden hidden flex items-center space-x-2">
                 @guest
                 <a href="{{ route('login') }}" class="auth-button-login text-xs py-1.5">
                     <span>Login</span>
@@ -283,7 +290,13 @@
     <div :class="{'block': open, 'hidden': !open}" class="hidden sm:hidden bg-gradient-to-b from-gray-900/95 to-slate-900/95 border-t border-gray-700/50 backdrop-blur-lg">
         <div class="pt-3 pb-4 space-y-2 px-3">
             <div class="mb-3 px-2">
-                <input type="text" placeholder="Search products..." class="w-full px-4 py-2.5 bg-gradient-to-r from-gray-800/80 to-gray-700/80 border border-gray-600/50 rounded-lg text-gray-300 focus:outline-none focus:ring-2 focus:ring-blue-400/50 focus:border-blue-400/50 text-sm backdrop-blur-sm">
+                <input 
+                    type="text" 
+                    name="search" 
+                    placeholder="Cari produk..." 
+                    class="w-full px-4 py-2.5 bg-white text-black placeholder-gray-400 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-400 focus:border-blue-400 text-sm transition-all duration-200"
+                    value="{{ request('search') }}"
+                >
             </div>
             
             <x-responsive-nav-link :href="route('home')" :active="request()->routeIs('home')" class="flex items-center gap-2 px-3 py-2 rounded-md text-gray-300 hover:bg-gray-800 hover:text-white">

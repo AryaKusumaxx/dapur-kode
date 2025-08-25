@@ -14,12 +14,27 @@ class ProductController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function index()
-    {
-        $products = Product::latest()->paginate(10);
-        
-        return view('products.index', compact('products'));
+public function index(Request $request)
+{
+    $query = Product::query();
+
+    // Filter kategori
+    if ($request->has('category') && $request->category != '') {
+        $query->where('type', $request->category);
     }
+
+    // Filter pencarian (jika ada)
+    if ($request->has('search') && $request->search != '') {
+        $query->where('name', 'like', "%{$request->search}%");
+    }
+
+    // Filter urutan (sort)
+    // ...existing sort code...
+
+    $products = $query->latest()->paginate(10);
+
+    return view('products.index', compact('products'));
+}
 
     /**
      * Show the form for creating a new resource.

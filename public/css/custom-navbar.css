@@ -7,6 +7,7 @@
         rgba(17, 24, 39, 0.85) 50%,
         rgba(15, 23, 42, 0.9) 100%
     );
+    color: #fff !important;
 }
 
 .nav-item {
@@ -96,7 +97,6 @@
 }
 
 .search-box:hover {
-    transform: translateY(-1px);
     box-shadow: 0 8px 20px -5px rgba(0, 0, 0, 0.3);
 }
 

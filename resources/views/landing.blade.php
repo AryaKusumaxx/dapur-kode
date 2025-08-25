@@ -21,12 +21,22 @@
     .cta-section {
         background-image: linear-gradient(135deg, #3b82f6 0%, #6366f1 100%);
     }
+    .fade-in-up {
+        opacity: 0;
+        transform: translateY(40px);
+        transition: opacity 0.8s cubic-bezier(.4,0,.2,1), transform 0.8s cubic-bezier(.4,0,.2,1);
+        will-change: opacity, transform;
+    }
+    .fade-in-up.visible {
+        opacity: 1;
+        transform: translateY(0);
+    }
 </style>
 @endpush
 
 @section('content')
     <!-- Hero Section -->
-    <section class="bg-slate-800 text-white py-16">
+    <section class="bg-slate-800 text-white py-16 fade-in-up">
         <div class="container mx-auto px-4">
             <div class="grid grid-cols-1 md:grid-cols-2 gap-8 items-center">
                 <div class="text-center md:text-left">
@@ -54,7 +64,7 @@
     </section>
 
     <!-- Featured Products Section -->
-    <section class="py-12 bg-gray-100">
+    <section class="py-12 bg-gray-100 fade-in-up">
         <div class="container mx-auto px-4">
             <div class="text-center mb-10">
                 <h2 class="text-3xl font-bold text-gray-900 mb-3">Produk Unggulan</h2>
@@ -107,7 +117,7 @@
     </section>
 
     <!-- Product Categories -->
-    <section class="py-16 bg-white">
+    <section class="py-16 bg-white fade-in-up">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div class="text-center mb-12">
                 <h2 class="text-3xl font-bold text-gray-900 mb-4">Kategori Produk</h2>
@@ -173,7 +183,7 @@
     </section>
 
     <!-- Features Section -->
-    <section class="py-16 bg-gray-50" id="features">
+    <section class="py-16 bg-gray-50 fade-in-up" id="features">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div class="text-center mb-12">
                 <h2 class="text-3xl font-bold text-gray-900 mb-4">Mengapa Memilih DapurKode?</h2>
@@ -263,7 +273,7 @@
     </section>
 
     <!-- About Section -->
-    <section class="py-16 bg-white" id="about">
+    <section class="py-16 bg-white fade-in-up" id="about">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div class="flex flex-col md:flex-row md:items-center md:justify-between">
                 <div class="md:w-1/2 mb-8 md:mb-0 md:pr-10">
@@ -315,11 +325,25 @@
         document.querySelectorAll('a[href^="#"]').forEach(anchor => {
             anchor.addEventListener('click', function (e) {
                 e.preventDefault();
-                
                 document.querySelector(this.getAttribute('href')).scrollIntoView({
                     behavior: 'smooth'
                 });
             });
+        });
+
+        // Fade-in on scroll (repeated animation)
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('visible');
+                } else {
+                    entry.target.classList.remove('visible');
+                }
+            });
+        }, { threshold: 0.2 });
+
+        document.querySelectorAll('.fade-in-up').forEach(el => {
+            observer.observe(el);
         });
     });
 </script>
