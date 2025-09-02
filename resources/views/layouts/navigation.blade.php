@@ -15,8 +15,6 @@
                     <div class="flex space-x-1">
                     </div>
                         
-
-
                             <div class="hidden sm:flex items-center ml-8 space-x-2">
     <a href="{{ route('home') }}" class="nav-item {{ request()->routeIs('home') ? 'nav-active' : '' }} group">
         <div class="flex items-center p-2 rounded-lg transition-all duration-300 transform group-hover:scale-105">

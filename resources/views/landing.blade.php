@@ -4,27 +4,34 @@
 
 @push('styles')
 <style>
+    /* Animasi floating lebih halus */
     .floating-image {
-        animation: float 4s ease-in-out infinite;
+        animation: float 6s ease-in-out infinite;
     }
-    
+
     @keyframes float {
         0% { transform: translateY(0px); }
-        50% { transform: translateY(-10px); }
+        50% { transform: translateY(-15px); }
         100% { transform: translateY(0px); }
     }
-    
+
+    /* Efek hover untuk card produk & fitur */
+    .product-card:hover,
     .feature-card:hover {
         transform: translateY(-5px);
+        box-shadow: 0 10px 20px rgba(0,0,0,0.1);
     }
     
+    /* Gradien yang lebih elegan untuk CTA */
     .cta-section {
-        background-image: linear-gradient(135deg, #3b82f6 0%, #6366f1 100%);
+        background-image: linear-gradient(to right, #4c51bf, #6b46c1);
     }
+
+    /* Animasi fade-in yang lebih halus */
     .fade-in-up {
         opacity: 0;
-        transform: translateY(40px);
-        transition: opacity 0.8s cubic-bezier(.4,0,.2,1), transform 0.8s cubic-bezier(.4,0,.2,1);
+        transform: translateY(20px);
+        transition: opacity 0.8s cubic-bezier(.4, 0, .2, 1), transform 0.8s cubic-bezier(.4, 0, .2, 1);
         will-change: opacity, transform;
     }
     .fade-in-up.visible {
@@ -36,85 +43,87 @@
 
 @section('content')
     <!-- Hero Section -->
-    <section class="bg-slate-800 text-white py-16 fade-in-up">
-        <div class="container mx-auto px-4">
-            <div class="grid grid-cols-1 md:grid-cols-2 gap-8 items-center">
-                <div class="text-center md:text-left">
-                    <h1 class="text-4xl font-bold mb-4">Solusi Digital Terbaik untuk Bisnis Anda</h1>
-                    <p class="text-lg mb-8">
-                        DapurKode menyediakan berbagai solusi digital berkualitas tinggi untuk mengembangkan bisnis Anda. Dari website custom, source code aplikasi, hingga layanan instalasi dan pengembangan.
-                    </p>
-                    <div class="flex flex-wrap gap-4 justify-center md:justify-start">
-                        <a href="{{ route('products.index') }}" class="bg-blue-600 hover:bg-blue-700 text-white font-medium py-2 px-6 rounded-md inline-flex items-center">
-                            Lihat Produk
-                            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 ml-2" viewBox="0 0 20 20" fill="currentColor">
-                                <path fill-rule="evenodd" d="M10.293 3.293a1 1 0 011.414 0l6 6a1 1 0 010 1.414l-6 6a1 1 0 01-1.414-1.414L14.586 11H3a1 1 0 110-2h11.586l-4.293-4.293a1 1 0 010-1.414z" clip-rule="evenodd" />
-                            </svg>
-                        </a>
-                        <a href="#about" class="border border-white text-white font-medium py-2 px-6 rounded-md hover:bg-white hover:text-gray-900">
-                            Tentang Kami
-                        </a>
-                    </div>
-                </div>
-                <div class="flex justify-center">
-                    <img src="{{ asset('images/hero-illustration.svg') }}" alt="Hero Illustration" class="w-full max-w-md">
+    <section class="bg-gradient-to-br from-gray-900 to-indigo-900 text-white py-24 md:py-32 fade-in-up">
+    <div class="container mx-auto px-6">
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-12 items-center">
+            <div class="text-center md:text-left">
+                <h1 class="text-4xl lg:text-5xl font-extrabold leading-tight mb-4">
+                    Solusi Digital Modern untuk Masa Depan Bisnis Anda
+                </h1>
+                <p class="text-lg text-gray-300 mb-8 max-w-xl mx-auto md:mx-0">
+                    Kami menyediakan produk digital berkualitas tinggi: dari website custom, source code aplikasi, hingga layanan instalasi profesional.
+                </p>
+                <div class="flex flex-wrap gap-4 justify-center md:justify-start">
+                    <a href="{{ route('products.index') }}" class="bg-indigo-600 hover:bg-indigo-700 text-white font-medium py-3 px-8 rounded-full shadow-lg transition-all duration-300 transform hover:scale-105">
+                        Jelajahi Produk
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 ml-2 inline-block" viewBox="0 0 20 20" fill="currentColor">
+                            <path fill-rule="evenodd" d="M10.293 3.293a1 1 0 011.414 0l6 6a1 1 0 010 1.414l-6 6a1 1 0 01-1.414-1.414L14.586 11H3a1 1 0 110-2h11.586l-4.293-4.293a1 1 0 010-1.414z" clip-rule="evenodd" />
+                        </svg>
+                    </a>
+                    <a href="#about" class="border-2 border-white text-white font-medium py-3 px-8 rounded-full hover:bg-white hover:text-gray-900 transition-all duration-300">
+                        Tentang Kami
+                    </a>
                 </div>
             </div>
+            <div class="flex justify-center">
+                <img src="{{ asset('images/hero-illustration.svg') }}" alt="Ilustrasi Solusi Digital" class="w-full max-w-md floating-image">
+            </div>
         </div>
-    </section>
+    </div>
+</section>
 
     <!-- Featured Products Section -->
-    <section class="py-12 bg-gray-100 fade-in-up">
-        <div class="container mx-auto px-4">
-            <div class="text-center mb-10">
-                <h2 class="text-3xl font-bold text-gray-900 mb-3">Produk Unggulan</h2>
-                <p class="text-gray-600 max-w-2xl mx-auto">Temukan solusi digital terbaik untuk kebutuhan bisnis Anda dari berbagai produk unggulan kami.</p>
-            </div>
-            
-            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-                @forelse($featuredProducts as $product)
-                <div class="bg-white rounded-lg shadow-md overflow-hidden transition-transform hover:shadow-lg hover:-translate-y-1">
-                    <img src="{{ $product->featured_image ? asset('storage/' . $product->featured_image) : asset('images/product-placeholder.jpg') }}" 
-                         alt="{{ $product->name }}" 
-                         class="w-full h-48 object-cover">
-                    <div class="p-5">
-                        <div class="flex justify-between items-start mb-2">
-                            <h3 class="text-lg font-semibold text-gray-900">
-                                {{ $product->name }}
-                            </h3>
-                            <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium 
-                                {{ $product->type === 'paket' ? 'bg-blue-100 text-blue-800' : 
-                                  ($product->type === 'jasa_pasang' ? 'bg-green-100 text-green-800' : 'bg-purple-100 text-purple-800') }}">
-                                {{ $product->type === 'paket' ? 'Paket' : 
-                                   ($product->type === 'jasa_pasang' ? 'Jasa Pasang' : 'Source Code') }}
-                            </span>
-                        </div>
-                        <p class="text-gray-600 mb-4">{{ Str::limit($product->short_description, 100) }}</p>
-                        <div class="flex items-center justify-between">
-                            <span class="text-lg font-bold text-gray-900">Rp {{ number_format($product->base_price, 0, ',', '.') }}</span>
-                            <a href="{{ route('products.show', $product) }}" class="inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">
-                                Detail
-                            </a>
-                        </div>
+    <section class="py-16 bg-gray-50 fade-in-up">
+    <div class="container mx-auto px-6">
+        <div class="text-center mb-12">
+            <h2 class="text-4xl font-bold text-gray-900 mb-3">Produk Unggulan</h2>
+            <p class="text-lg text-gray-600 max-w-2xl mx-auto">Temukan solusi digital terbaik untuk kebutuhan bisnis Anda dari berbagai produk unggulan kami.</p>
+        </div>
+        
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+            @forelse($featuredProducts as $product)
+            <div class="bg-white rounded-xl shadow-md overflow-hidden transition-all duration-300 hover:shadow-xl hover:scale-105">
+                <img src="{{ $product->featured_image ? asset('storage/' . $product->featured_image) : asset('images/product-placeholder.jpg') }}" 
+                     alt="{{ $product->name }}" 
+                     class="w-full h-56 object-cover">
+                <div class="p-6">
+                    <div class="flex justify-between items-start mb-2">
+                        <h3 class="text-xl font-bold text-gray-900">
+                            {{ $product->name }}
+                        </h3>
+                        <span class="inline-flex items-center px-3 py-1 rounded-full text-xs font-semibold 
+                            {{ $product->type === 'paket' ? 'bg-blue-100 text-blue-800' : 
+                              ($product->type === 'jasa_pasang' ? 'bg-green-100 text-green-800' : 'bg-purple-100 text-purple-800') }}">
+                            {{ $product->type === 'paket' ? 'Paket' : 
+                              ($product->type === 'jasa_pasang' ? 'Jasa Pasang' : 'Source Code') }}
+                        </span>
+                    </div>
+                    <p class="text-gray-600 mb-4">{{ Str::limit($product->short_description, 100) }}</p>
+                    <div class="flex items-center justify-between">
+                        <span class="text-xl font-extrabold text-indigo-600">Rp {{ number_format($product->base_price, 0, ',', '.') }}</span>
+                        <a href="{{ route('products.show', $product) }}" class="inline-flex items-center px-6 py-2 border border-transparent text-sm font-medium rounded-full text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 transition-colors">
+                            Detail
+                        </a>
                     </div>
                 </div>
-                @empty
-                <div class="col-span-full text-center py-10">
-                    <p class="text-gray-500">Belum ada produk unggulan saat ini.</p>
-                </div>
-                @endforelse
             </div>
-            
-            <div class="mt-12 text-center">
-                <a href="{{ route('products.index') }}" class="inline-flex items-center px-6 py-3 border border-transparent text-base font-medium rounded-md text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">
-                    Lihat Semua Produk
-                    <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 ml-2" viewBox="0 0 20 20" fill="currentColor">
-                        <path fill-rule="evenodd" d="M10.293 3.293a1 1 0 011.414 0l6 6a1 1 0 010 1.414l-6 6a1 1 0 01-1.414-1.414L14.586 11H3a1 1 0 110-2h11.586l-4.293-4.293a1 1 0 010-1.414z" clip-rule="evenodd" />
-                    </svg>
-                </a>
+            @empty
+            <div class="col-span-full text-center py-10">
+                <p class="text-gray-500">Belum ada produk unggulan saat ini.</p>
             </div>
+            @endforelse
         </div>
-    </section>
+        
+        <div class="mt-16 text-center">
+            <a href="{{ route('products.index') }}" class="inline-flex items-center px-8 py-4 border border-transparent text-base font-medium rounded-full text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 shadow-md">
+                Lihat Semua Produk
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 ml-2" viewBox="0 0 20 20" fill="currentColor">
+                    <path fill-rule="evenodd" d="M10.293 3.293a1 1 0 011.414 0l6 6a1 1 0 010 1.414l-6 6a1 1 0 01-1.414-1.414L14.586 11H3a1 1 0 110-2h11.586l-4.293-4.293a1 1 0 010-1.414z" clip-rule="evenodd" />
+                </svg>
+            </a>
+        </div>
+    </div>
+</section>
 
     <!-- Product Categories -->
     <section class="py-16 bg-white fade-in-up">
