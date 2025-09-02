@@ -13,55 +13,60 @@
                 <!-- Navigation Links - Dynamic based on user role -->
                 <div class="hidden sm:flex items-center ml-8">
                     <div class="flex space-x-1">
-                        <a href="{{ route('home') }}" class="nav-item {{ request()->routeIs('home') ? 'nav-active' : '' }} flex items-center">
-                            <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6" />
-                            </svg>
-                            <span>{{ __('Home') }}</span>
-                        </a>
+                    </div>
+                        
 
-                        <!-- Products with dropdown -->
-                        <div class="relative" @click.away="productDropdown = false">
-                            <button @click="productDropdown = !productDropdown" class="nav-item flex items-center">
-                                <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20 7l-8-4-8 4m16 0l-8 4m8-4v10l-8 4m0-10L4 7m8 4v10" />
-                                </svg>
-                                <span>{{ __('Products') }}</span>
-                                <svg class="ml-1 w-4 h-4 transition-transform duration-200" :class="{'rotate-180': productDropdown}" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor">
-                                    <path fill-rule="evenodd" d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z" clip-rule="evenodd" />
-                                </svg>
-                            </button>
 
-                       <!-- Product Dropdown -->
-<div x-cloak x-show="productDropdown" class="nav-dropdown absolute left-0 mt-2 w-56 py-2 z-50 bg-gray-800"
-     x-transition:enter="transition ease-out duration-200"
-     x-transition:enter-start="transform opacity-0 translate-y-2"
-     x-transition:enter-end="transform opacity-100 translate-y-0"
-     x-transition:leave="transition ease-in duration-150"
-     x-transition:leave-start="transform opacity-100 translate-y-0"
-     x-transition:leave-end="transform opacity-0 translate-y-2">
-    <div class="px-4 py-2 font-medium text-sm text-blue-300 uppercase tracking-wider border-b border-gray-700">
-        Kategori Produk
-    </div>
-    <a href="{{ route('products.index', ['type' => 'paket']) }}" class="dropdown-item flex items-center px-4 py-2 text-sm">
-        <span class="flex items-center justify-center w-6 h-6 rounded-full bg-yellow-900/20 mr-2.5">
-            <span class="w-2 h-2 rounded-full bg-yellow-400"></span>
-        </span>
-        Paket Dapur
+                            <div class="hidden sm:flex items-center ml-8 space-x-2">
+    <a href="{{ route('home') }}" class="nav-item {{ request()->routeIs('home') ? 'nav-active' : '' }} group">
+        <div class="flex items-center p-2 rounded-lg transition-all duration-300 transform group-hover:scale-105">
+            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-2 text-gray-400 group-hover:text-white transition-colors duration-300" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6" />
+            </svg>
+            <span class="text-gray-300 group-hover:text-white transition-colors duration-300">{{ __('Home') }}</span>
+        </div>
     </a>
-    <a href="{{ route('products.index', ['type' => 'jasa_pasang']) }}" class="dropdown-item flex items-center px-4 py-2 text-sm">
-        <span class="flex items-center justify-center w-6 h-6 rounded-full bg-blue-900/20 mr-2.5">
-            <span class="w-2 h-2 rounded-full bg-blue-400"></span>
-        </span>
-        Jasa Pemasangan
-    </a>
-    <a href="{{ route('products.index', ['type' => 'lepas']) }}" class="dropdown-item flex items-center px-4 py-2 text-sm">
-        <span class="flex items-center justify-center w-6 h-6 rounded-full bg-green-900/20 mr-2.5">
-            <span class="w-2 h-2 rounded-full bg-green-400"></span>
-        </span>
-        Produk Lepas
-    </a>
-</div>
+
+    <div class="relative" x-data="{ productDropdown: false }" @click.away="productDropdown = false">
+        <button @click="productDropdown = !productDropdown" class="nav-item group flex items-center p-2 rounded-lg transition-all duration-300 transform group-hover:scale-105">
+            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-2 text-gray-400 group-hover:text-white transition-colors duration-300" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20 7l-8-4-8 4m16 0l-8 4m8-4v10l-8 4m0-10L4 7m8 4v10" />
+            </svg>
+            <span class="text-gray-300 group-hover:text-white transition-colors duration-300">{{ __('Products') }}</span>
+            <svg class="ml-1 w-4 h-4 text-gray-400 group-hover:text-white transition-transform duration-300" :class="{'rotate-180': productDropdown}" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor">
+                <path fill-rule="evenodd" d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z" clip-rule="evenodd" />
+            </svg>
+        </button>
+
+        <div x-cloak x-show="productDropdown" class="nav-dropdown absolute left-0 mt-2 w-56 py-2 z-50 rounded-lg bg-white shadow-xl ring-1 ring-gray-900/5"
+             x-transition:enter="transition ease-out duration-200"
+             x-transition:enter-start="transform opacity-0 translate-y-2"
+             x-transition:enter-end="transform opacity-100 translate-y-0"
+             x-transition:leave="transition ease-in duration-150"
+             x-transition:leave-start="transform opacity-100 translate-y-0"
+             x-transition:leave-end="transform opacity-0 translate-y-2">
+            <div class="px-4 py-2 font-semibold text-xs text-gray-500 uppercase tracking-wider border-b border-gray-200">
+                Kategori Produk
+            </div>
+            <a href="{{ route('products.index', ['type' => 'paket']) }}" class="dropdown-item flex items-center px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 transition-colors duration-200">
+                <div class="w-8 h-8 rounded-full bg-blue-500/10 flex items-center justify-center mr-3">
+                    <i class="fas fa-box-open text-blue-600 text-sm"></i>
+                </div>
+                Paket Website
+            </a>
+            <a href="{{ route('products.index', ['type' => 'jasa_pasang']) }}" class="dropdown-item flex items-center px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 transition-colors duration-200">
+                <div class="w-8 h-8 rounded-full bg-green-500/10 flex items-center justify-center mr-3">
+                    <i class="fas fa-tools text-green-600 text-sm"></i>
+                </div>
+                Jasa Pemasangan
+            </a>
+            <a href="{{ route('products.index', ['type' => 'lepas']) }}" class="dropdown-item flex items-center px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 transition-colors duration-200">
+                <div class="w-8 h-8 rounded-full bg-yellow-500/10 flex items-center justify-center mr-3">
+                    <i class="fas fa-code text-yellow-600 text-sm"></i>
+                </div>
+                Source Code Lepas
+            </a>
+        </div>
 
                     </div>
 
