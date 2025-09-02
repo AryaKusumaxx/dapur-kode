@@ -3,59 +3,79 @@
 @section('title', $product->name)
 
 @section('content')
-    <div class="bg-white rounded-lg shadow-sm overflow-hidden">
-        <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
-            <!-- Product Images -->
-            <div class="p-6">
-                <div class="mb-4">
-                    <img src="{{ $product->featured_image ? asset('storage/' . $product->featured_image) : asset('images/product-placeholder.jpg') }}" 
-                         alt="{{ $product->name }}" 
-                         class="w-full h-auto object-cover rounded-lg">
+<div class="container mx-auto px-4 py-8 md:py-16">
+    <div class="grid grid-cols-1 md:grid-cols-3 gap-8 md:gap-12 lg:gap-16">
+
+        <div class="md:col-span-2">
+            <div class="bg-gray-100 rounded-2xl overflow-hidden shadow-lg p-6 flex justify-center items-center">
+                <img src="{{ $product->featured_image ? asset('storage/' . $product->featured_image) : asset('images/product-placeholder.jpg') }}"
+                     alt="{{ $product->name }}" 
+                     class="w-full h-auto object-contain rounded-xl transition-transform duration-300 transform hover:scale-105">
+            </div>
+
+            @if($product->gallery_images && is_string($product->gallery_images) && count(json_decode($product->gallery_images, true) ?: []) > 0)
+                <div class="mt-8 grid grid-cols-4 gap-4">
+                    @foreach(json_decode($product->gallery_images, true) as $image)
+                        <img src="{{ asset('storage/' . $image) }}" 
+                             alt="{{ $product->name }}" 
+                             class="w-full h-24 object-cover rounded-lg border-2 border-transparent hover:border-indigo-500 cursor-pointer transition-all duration-300">
+                    @endforeach
+                </div>
+            @endif
+
+            <div class="mt-12 p-8 bg-white rounded-2xl shadow-xl">
+                <h2 class="text-2xl font-bold text-gray-900 mb-6">Deskripsi Produk</h2>
+                <div class="prose max-w-none text-gray-700 leading-relaxed mb-8">
+                    {!! $product->description ?? 'Belum ada deskripsi untuk produk ini.' !!}
                 </div>
                 
-                @if($product->gallery_images && is_string($product->gallery_images) && count(json_decode($product->gallery_images, true) ?: []) > 0)
-                    <div class="grid grid-cols-4 gap-2">
-                        @foreach(json_decode($product->gallery_images, true) as $image)
-                            <img src="{{ asset('storage/' . $image) }}" 
-                                alt="{{ $product->name }}" 
-                                class="w-full h-20 object-cover rounded-lg">
+                @if(isset($product->features))
+                    <h3 class="text-xl font-semibold text-gray-800 mb-4">Fitur Utama</h3>
+                    <ul class="space-y-4">
+                        @foreach(explode("\n", $product->features) as $feature)
+                            @if(!empty(trim($feature)))
+                                <li class="flex items-center text-gray-700">
+                                    <svg class="h-6 w-6 text-indigo-600 flex-shrink-0 mr-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                                    </svg>
+                                    <span>{{ trim($feature) }}</span>
+                                </li>
+                            @endif
                         @endforeach
-                    </div>
+                    </ul>
                 @endif
             </div>
-            
-            <!-- Product Details -->
-            <div class="p-6">
-                <div class="flex items-center">
-                    <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium 
+        </div>
+
+        <div class="md:col-span-1">
+            <div class="sticky top-8 space-y-8">
+                <div class="p-8 bg-white rounded-2xl shadow-xl">
+                    <span class="inline-flex items-center px-4 py-1 rounded-full text-sm font-semibold tracking-wide 
                         {{ $product->type === 'paket' ? 'bg-blue-100 text-blue-800' : 
-                          ($product->type === 'jasa_pasang' ? 'bg-green-100 text-green-800' : 'bg-purple-100 text-purple-800') }}">
+                            ($product->type === 'jasa_pasang' ? 'bg-green-100 text-green-800' : 'bg-purple-100 text-purple-800') }}">
                         {{ $product->type === 'paket' ? 'Paket Website' : 
-                           ($product->type === 'jasa_pasang' ? 'Jasa Pasang' : 'Source Code Lepas') }}
+                            ($product->type === 'jasa_pasang' ? 'Jasa Pasang' : 'Source Code Lepas') }}
                     </span>
+                    
+                    <h1 class="mt-4 text-3xl font-extrabold text-gray-900 leading-tight">
+                        {{ $product->name }}
+                    </h1>
+                    
+                    <div class="mt-4 text-4xl font-extrabold text-indigo-600">
+                        Rp {{ number_format($product->base_price, 0, ',', '.') }}
+                    </div>
                 </div>
-                
-                <h1 class="mt-2 text-3xl font-bold text-gray-900">{{ $product->name }}</h1>
-                
-                <div class="mt-4 text-3xl font-bold text-gray-900">
-                    Rp {{ number_format($product->base_price, 0, ',', '.') }}
-                </div>
-                
-                <div class="mt-4">
-                    <p class="text-gray-600">{{ $product->short_description ?? $product->description ? Str::limit(strip_tags($product->description), 150) : 'Belum ada deskripsi singkat untuk produk ini.' }}</p>
-                </div>
-                
-                <div class="mt-6">
-                    <form action="{{ route('orders.store') }}" method="POST" id="orderForm">
+
+                <div class="p-8 bg-white rounded-2xl shadow-xl">
+                    <form action="{{ route('orders.store') }}" method="POST" id="orderForm" class="space-y-6">
                         @csrf
                         <input type="hidden" name="product_id" value="{{ $product->id }}">
-                        
-                        <!-- Product Variants -->
+
                         @if($product->variants->count() > 0)
-                            <div class="mb-6">
-                                <label for="variant_id" class="block text-sm font-medium text-gray-700 mb-2">Varian</label>
-                                <select name="variant_id" id="variant_id" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm">
-                                    <option value="">Pilih Varian</option>
+                            <div>
+                                <label class="block text-sm font-semibold text-gray-700 mb-2">Pilih Varian</label>
+                                <select name="variant_id" id="variant_id" class="block w-full rounded-lg border-gray-300 focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm p-3">
+                                    <option value="">-- Pilih Varian --</option>
                                     @foreach($product->variants as $variant)
                                         <option value="{{ $variant->id }}" data-price="{{ $variant->price_adjustment }}">
                                             {{ $variant->name }} 
@@ -65,12 +85,11 @@
                                 </select>
                             </div>
                         @endif
-                        
-                        <!-- Warranty Selection -->
+
                         @if($product->warrantyPrices && $product->warrantyPrices->count() > 0)
-                            <div class="mb-6">
-                                <label for="warranty_months" class="block text-sm font-medium text-gray-700 mb-2">Garansi</label>
-                                <select name="warranty_months" id="warranty_months" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm">
+                            <div>
+                                <label class="block text-sm font-semibold text-gray-700 mb-2">Garansi</label>
+                                <select name="warranty_months" id="warranty_months" class="block w-full rounded-lg border-gray-300 focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm p-3">
                                     <option value="0">Tanpa Garansi</option>
                                     @foreach($product->warrantyPrices as $warranty)
                                         <option value="{{ $warranty->months }}" data-price="{{ $warranty->price }}">
@@ -81,61 +100,59 @@
                                 </select>
                             </div>
                         @endif
-                        
-                        <!-- Discount Code -->
-                        <div class="mb-6">
-                            <label for="discount_code" class="block text-sm font-medium text-gray-700 mb-2">Kode Diskon</label>
-                            <div class="flex">
-                                <input type="text" name="discount_code" id="discount_code" class="mt-1 block w-full rounded-l-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm" placeholder="Masukkan kode diskon">
-                                <button type="button" id="apply-discount" class="mt-1 inline-flex items-center px-3 py-2 border border-gray-300 shadow-sm text-sm leading-4 font-medium rounded-r-md text-gray-700 bg-white hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">
+
+                        <div>
+                            <label for="discount_code" class="block text-sm font-semibold text-gray-700 mb-2">Kode Diskon</label>
+                            <div class="flex rounded-lg overflow-hidden border border-gray-300 focus-within:border-indigo-500 focus-within:ring-1 focus-within:ring-indigo-500">
+                                <input type="text" name="discount_code" id="discount_code" placeholder="Masukkan kode" 
+                                       class="flex-1 px-4 py-2 border-none focus:ring-0 focus:border-0 sm:text-sm">
+                                <button type="button" id="apply-discount" 
+                                        class="px-4 py-2 text-sm font-medium text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none transition">
                                     Terapkan
                                 </button>
                             </div>
-                            <div id="discount-message" class="mt-2 text-sm"></div>
+                            <div id="discount-message" class="mt-1 text-sm"></div>
                         </div>
-                        
-                        <!-- Total Price -->
-                        <div class="mb-6 p-4 bg-gray-50 rounded-lg">
-                            <div class="flex justify-between text-sm">
-                                <span class="text-gray-600">Harga Produk:</span>
+
+                        <div class="p-6 bg-gray-50 rounded-xl space-y-3">
+                            <div class="flex justify-between items-center text-sm text-gray-600">
+                                <span>Harga Produk</span>
                                 <span id="base-price" class="font-medium">Rp {{ number_format($product->base_price, 0, ',', '.') }}</span>
                             </div>
                             
-                            <div class="variant-price-row" style="display: none">
-                                <div class="flex justify-between text-sm mt-2">
-                                    <span class="text-gray-600">Varian:</span>
-                                    <span id="variant-price" class="font-medium">Rp 0</span>
-                                </div>
+                            <div class="variant-price-row hidden flex justify-between items-center text-sm text-gray-600">
+                                <span>Varian</span>
+                                <span id="variant-price" class="font-medium">Rp 0</span>
                             </div>
-                            
-                            <div class="warranty-price-row" style="display: none">
-                                <div class="flex justify-between text-sm mt-2">
-                                    <span class="text-gray-600">Garansi:</span>
-                                    <span id="warranty-price" class="font-medium">Rp 0</span>
-                                </div>
+
+                            <div class="warranty-price-row hidden flex justify-between items-center text-sm text-gray-600">
+                                <span>Garansi</span>
+                                <span id="warranty-price" class="font-medium">Rp 0</span>
                             </div>
-                            
-                            <div class="discount-row" style="display: none">
-                                <span class="text-gray-600">Diskon:</span>
-                                <span id="discount-amount" class="font-medium text-green-600">-Rp 0</span>
+
+                            <div class="discount-row hidden flex justify-between items-center text-sm text-green-600">
+                                <span>Diskon</span>
+                                <span id="discount-amount" class="font-medium">-Rp 0</span>
                             </div>
-                            
-                            <div class="flex justify-between text-lg mt-3 pt-3 border-t border-gray-200">
-                                <span class="font-medium text-gray-900">Total:</span>
-                                <span id="total-price" class="font-bold text-gray-900">Rp {{ number_format($product->base_price, 0, ',', '.') }}</span>
+
+                            <div class="border-t border-gray-200 pt-3 flex justify-between items-center text-lg font-bold">
+                                <span class="text-gray-900">Total</span>
+                                <span id="total-price" class="text-indigo-600">Rp {{ number_format($product->base_price, 0, ',', '.') }}</span>
                             </div>
+
                             <input type="hidden" name="total_price" id="total-price-input" value="{{ $product->base_price }}">
                             <input type="hidden" name="discount_amount" id="discount-amount-input" value="0">
                         </div>
-                        
-                        <!-- Order Button -->
-                        <div class="mt-6">
+
+                        <div>
                             @auth
-                                <button type="submit" class="w-full bg-indigo-600 border border-transparent rounded-md py-3 px-8 flex items-center justify-center text-base font-medium text-white hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">
+                                <button type="submit" 
+                                        class="w-full py-4 rounded-xl bg-gradient-to-r from-indigo-600 to-purple-600 text-white font-bold shadow-lg hover:from-indigo-700 hover:to-purple-700 focus:outline-none focus:ring-4 focus:ring-indigo-500 focus:ring-opacity-50 transition-all duration-300">
                                     Beli Sekarang
                                 </button>
                             @else
-                                <a href="{{ route('login') }}" class="w-full bg-indigo-600 border border-transparent rounded-md py-3 px-8 flex items-center justify-center text-base font-medium text-white hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">
+                                <a href="{{ route('login') }}" 
+                                   class="block w-full py-4 rounded-xl bg-gradient-to-r from-indigo-600 to-purple-600 text-white font-bold shadow-lg hover:from-indigo-700 hover:to-purple-700 focus:outline-none focus:ring-4 focus:ring-indigo-500 focus:ring-opacity-50 transition-all duration-300 text-center">
                                     Login untuk Membeli
                                 </a>
                             @endauth
@@ -144,153 +161,7 @@
                 </div>
             </div>
         </div>
-        
-        <!-- Product Description -->
-        <div class="p-6 border-t border-gray-200">
-            <h2 class="text-xl font-semibold text-gray-900 mb-4">Deskripsi Produk</h2>
-            <div class="prose max-w-none">
-                {!! $product->description ?? 'Belum ada deskripsi untuk produk ini.' !!}
-            </div>
-        </div>
-        
-        <!-- Product Features -->
-        @if(isset($product->features))
-        <div class="p-6 border-t border-gray-200">
-            <h2 class="text-xl font-semibold text-gray-900 mb-4">Fitur</h2>
-            <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-                @foreach(explode("\n", $product->features) as $feature)
-                    @if(!empty(trim($feature)))
-                        <div class="flex items-start">
-                            <svg class="h-5 w-5 text-green-500 mt-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
-                            </svg>
-                            <span class="ml-2 text-gray-700">{{ trim($feature) }}</span>
-                        </div>
-                    @endif
-                @endforeach
-            </div>
-        </div>
-        @endif
-    </div>
-@endsection
 
-@push('scripts')
-<script>
-    document.addEventListener('DOMContentLoaded', function() {
-        const basePrice = {{ $product->base_price }};
-        const variantSelect = document.getElementById('variant_id');
-        const warrantySelect = document.getElementById('warranty_months');
-        const discountCodeInput = document.getElementById('discount_code');
-        const applyDiscountBtn = document.getElementById('apply-discount');
-        const discountMessage = document.getElementById('discount-message');
-        const totalPriceDisplay = document.getElementById('total-price');
-        const totalPriceInput = document.getElementById('total-price-input');
-        const discountAmountDisplay = document.getElementById('discount-amount');
-        const discountAmountInput = document.getElementById('discount-amount-input');
-        const variantPriceDisplay = document.getElementById('variant-price');
-        const warrantyPriceDisplay = document.getElementById('warranty-price');
-        
-        let variantPrice = 0;
-        let warrantyPrice = 0;
-        let discountAmount = 0;
-        
-        function updateTotalPrice() {
-            const total = basePrice + variantPrice + warrantyPrice - discountAmount;
-            totalPriceDisplay.textContent = 'Rp ' + total.toLocaleString('id-ID');
-            totalPriceInput.value = total;
-        }
-        
-        // Variant selection
-        if (variantSelect) {
-            variantSelect.addEventListener('change', function() {
-                const variantOption = this.options[this.selectedIndex];
-                const priceAdjustment = variantOption.dataset.price ? parseInt(variantOption.dataset.price) : 0;
-                
-                variantPrice = priceAdjustment;
-                
-                if (priceAdjustment !== 0) {
-                    variantPriceDisplay.textContent = (priceAdjustment > 0 ? '+' : '') + 'Rp ' + Math.abs(priceAdjustment).toLocaleString('id-ID');
-                    document.querySelector('.variant-price-row').style.display = 'block';
-                } else {
-                    document.querySelector('.variant-price-row').style.display = 'none';
-                }
-                
-                updateTotalPrice();
-                validateDiscount(); // Re-validate discount when variant changes
-            });
-        }
-        
-        // Warranty selection
-        if (warrantySelect) {
-            warrantySelect.addEventListener('change', function() {
-                const warrantyOption = this.options[this.selectedIndex];
-                const warrantyPriceValue = warrantyOption.dataset.price ? parseInt(warrantyOption.dataset.price) : 0;
-                
-                warrantyPrice = warrantyPriceValue;
-                
-                if (warrantyPriceValue > 0) {
-                    warrantyPriceDisplay.textContent = 'Rp ' + warrantyPriceValue.toLocaleString('id-ID');
-                    document.querySelector('.warranty-price-row').style.display = 'block';
-                } else {
-                    document.querySelector('.warranty-price-row').style.display = 'none';
-                }
-                
-                updateTotalPrice();
-            });
-        }
-        
-        // Apply discount
-        if (applyDiscountBtn) {
-            applyDiscountBtn.addEventListener('click', validateDiscount);
-        }
-        
-        function validateDiscount() {
-            const code = discountCodeInput.value.trim();
-            
-            if (!code) {
-                discountMessage.innerHTML = '<span class="text-red-600">Masukkan kode diskon terlebih dahulu.</span>';
-                return;
-            }
-            
-            discountMessage.innerHTML = '<span class="text-gray-600">Memvalidasi kode diskon...</span>';
-            
-            // Make AJAX request to validate discount
-            fetch('{{ route('discounts.validate') }}', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                    'X-CSRF-TOKEN': '{{ csrf_token() }}'
-                },
-                body: JSON.stringify({
-                    code: code,
-                    product_id: {{ $product->id }},
-                    variant_id: variantSelect ? variantSelect.value : null
-                })
-            })
-            .then(response => response.json())
-            .then(data => {
-                if (data.valid) {
-                    discountMessage.innerHTML = `<span class="text-green-600">${data.message}</span>`;
-                    
-                    discountAmount = data.discount.discount_amount;
-                    discountAmountDisplay.textContent = '-Rp ' + discountAmount.toLocaleString('id-ID');
-                    discountAmountInput.value = discountAmount;
-                    
-                    document.querySelector('.discount-row').style.display = 'block';
-                    updateTotalPrice();
-                } else {
-                    discountMessage.innerHTML = `<span class="text-red-600">${data.message}</span>`;
-                    discountAmount = 0;
-                    discountAmountInput.value = 0;
-                    document.querySelector('.discount-row').style.display = 'none';
-                    updateTotalPrice();
-                }
-            })
-            .catch(error => {
-                console.error('Error validating discount:', error);
-                discountMessage.innerHTML = '<span class="text-red-600">Terjadi kesalahan saat memvalidasi kode.</span>';
-            });
-        }
-    });
-</script>
-@endpush
+    </div>
+</div>
+@endsection
